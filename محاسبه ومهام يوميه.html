@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#6c5ce7">
+<title>DevForge Manager</title>
+
+<style>
+*{box-sizing:border-box}
+
+:root{
+--bg:#f5f7fb;
+--card:#fff;
+--text:#172033;
+--muted:#7b8498;
+--primary:#6c5ce7;
+--primary2:#8e7dff;
+--green:#18b887;
+--red:#ef476f;
+--border:#e8ebf2;
+--shadow:0 10px 30px rgba(31,35,65,.08)
+}
+
+body.dark{
+--bg:#10131c;
+--card:#191e2a;
+--text:#f4f6fb;
+--muted:#9ca5b8;
+--border:#293040;
+--shadow:0 10px 30px rgba(0,0,0,.25)
+}
+
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:Arial,Tahoma,sans-serif;
+min-height:100vh
+}
+
+button,input{
+font:inherit
+}
+
+button{
+border:0;
+cursor:pointer
+}
+
+.app{
+max-width:700px;
+margin:auto;
+padding-bottom:80px
+}
+
+header{
+padding:24px 18px 18px;
+background:linear-gradient(135deg,var(--primary),var(--primary2));
+color:white;
+border-radius:0 0 28px 28px;
+box-shadow:var(--shadow)
+}
+
+.top{
+display:flex;
+align-items:center;
+justify-content:space-between
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px
+}
+
+.logoIcon{
+width:48px;
+height:48px;
+display:grid;
+place-items:center;
+background:rgba(255,255,255,.18);
+border-radius:15px;
+font-size:25px
+}
+
+.logo h1{
+font-size:20px;
+margin:0
+}
+
+.logo small{
+opacity:.8
+}
+
+.themeBtn{
+width:42px;
+height:42px;
+border-radius:13px;
+background:rgba(255,255,255,.16);
+color:white
+}
+
+.date{
+margin-top:20px;
+opacity:.9;
+font-size:14px
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-top:15px
+}
+
+.stat{
+background:rgba(255,255,255,.14);
+padding:13px 8px;
+border-radius:16px;
+text-align:center
+}
+
+.stat b{
+display:block;
+font-size:20px
+}
+
+.stat span{
+font-size:11px;
+opacity:.8
+}
+
+main{
+padding:18px
+}
+
+.tabs{
+display:grid;
+grid-template-columns:1fr 1fr;
+background:var(--card);
+padding:5px;
+border-radius:17px;
+box-shadow:var(--shadow);
+margin-bottom:18px
+}
+
+.tab{
+padding:12px;
+border-radius:13px;
+background:transparent;
+color:var(--muted);
+font-weight:bold
+}
+
+.tab.active{
+background:var(--primary);
+color:white
+}
+
+.section{
+display:none
+}
+
+.section.active{
+display:block
+}
+
+.card{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:20px;
+padding:16px;
+margin-bottom:15px;
+box-shadow:var(--shadow)
+}
+
+.cardTitle{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:14px
+}
+
+.cardTitle h2{
+font-size:17px;
+margin:0
+}
+
+.addBtn{
+background:var(--primary);
+color:white;
+padding:10px 14px;
+border-radius:12px
+}
+
+.input{
+width:100%;
+padding:13px 14px;
+border:1px solid var(--border);
+border-radius:13px;
+background:var(--bg);
+color:var(--text);
+outline:none;
+margin-bottom:10px
+}
+
+.input:focus{
+border-color:var(--primary)
+}
+
+.row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px
+}
+
+.task{
+display:flex;
+align-items:center;
+gap:12px;
+padding:13px;
+border:1px solid var(--border);
+border-radius:15px;
+margin-bottom:9px
+}
+
+.check{
+width:25px;
+height:25px;
+border-radius:8px;
+border:2px solid var(--primary);
+background:transparent;
+color:white;
+flex:none
+}
+
+.task.done .check{
+background:var(--green);
+border-color:var(--green)
+}
+
+.task.done .taskText{
+text-decoration:line-through;
+color:var(--muted)
+}
+
+.taskText{
+flex:1
+}
+
+.taskActions{
+display:flex;
+gap:5px
+}
+
+.iconBtn{
+width:34px;
+height:34px;
+border-radius:10px;
+background:var(--bg);
+color:var(--text)
+}
+
+.iconBtn.delete{
+color:var(--red)
+}
+
+.empty{
+text-align:center;
+padding:30px 10px;
+color:var(--muted)
+}
+
+.invoiceHeader{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px
+}
+
+.items{
+margin-top:10px
+}
+
+.item{
+border:1px solid var(--border);
+border-radius:17px;
+padding:14px;
+margin-bottom:12px
+}
+
+.itemTop{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px
+}
+
+.itemTitle{
+font-weight:bold;
+font-size:15px
+}
+
+.remove{
+color:var(--red);
+background:transparent;
+font-size:18px
+}
+
+.fieldLabel{
+display:block;
+font-size:12px;
+font-weight:bold;
+color:var(--muted);
+margin:0 0 6px 3px
+}
+
+.productGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px
+}
+
+.full{
+grid-column:1/-1
+}
+
+.productTotal{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:5px;
+padding:11px 12px;
+background:rgba(108,92,231,.08);
+border-radius:12px;
+color:var(--muted)
+}
+
+.productTotal strong{
+color:var(--primary);
+font-size:16px
+}
+
+.totals{
+border-top:1px dashed var(--border);
+margin-top:15px;
+padding-top:12px
+}
+
+.totalLine{
+display:flex;
+justify-content:space-between;
+margin:8px 0;
+color:var(--muted)
+}
+
+.totalLine.final{
+color:var(--text);
+font-size:20px;
+font-weight:bold
+}
+
+.saveInvoice{
+width:100%;
+padding:14px;
+background:linear-gradient(135deg,var(--primary),var(--primary2));
+color:white;
+border-radius:14px;
+font-weight:bold;
+margin-top:12px
+}
+
+.historyItem{
+padding:13px;
+border:1px solid var(--border);
+border-radius:14px;
+margin-bottom:8px;
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.historyItem small{
+color:var(--muted)
+}
+
+.badge{
+padding:5px 8px;
+border-radius:8px;
+background:rgba(24,184,135,.12);
+color:var(--green);
+font-size:12px
+}
+
+.bottom{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+padding:10px 18px;
+background:rgba(245,247,251,.92);
+backdrop-filter:blur(12px);
+border-top:1px solid var(--border)
+}
+
+body.dark .bottom{
+background:rgba(16,19,28,.92)
+}
+
+.bottomInner{
+max-width:660px;
+margin:auto;
+text-align:center;
+color:var(--muted);
+font-size:11px
+}
+
+.toast{
+position:fixed;
+bottom:75px;
+left:50%;
+transform:translateX(-50%) translateY(20px);
+background:#171b27;
+color:white;
+padding:12px 18px;
+border-radius:13px;
+opacity:0;
+pointer-events:none;
+transition:.3s;
+z-index:99
+}
+
+.toast.show{
+opacity:1;
+transform:translateX(-50%) translateY(0)
+}
+
+@media(max-width:430px){
+.productGrid{
+grid-template-columns:1fr 1fr
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+
+<div class="top">
+
+<div class="logo">
+
+<div class="logoIcon">📋</div>
+
+<div>
+<h1>DevForge Manager</h1>
+<small>مهامك وفواتيرك في مكان واحد</small>
+</div>
+
+</div>
+
+<button class="themeBtn" onclick="toggleTheme()">🌙</button>
+
+</div>
+
+<div class="date" id="today"></div>
+
+<div class="stats">
+
+<div class="stat">
+<b id="taskCount">0</b>
+<span>المهام</span>
+</div>
+
+<div class="stat">
+<b id="doneCount">0</b>
+<span>منجزة</span>
+</div>
+
+<div class="stat">
+<b id="invoiceCount">0</b>
+<span>الفواتير</span>
+</div>
+
+</div>
+
+</header>
+
+<main>
+
+<div class="tabs">
+
+<button class="tab active"
+onclick="showTab('tasks',this)">
+📋 المهام اليومية
+</button>
+
+<button class="tab"
+onclick="showTab('invoice',this)">
+🧾 الفوترة
+</button>
+
+</div>
+
+
+<!-- المهام -->
+
+<section id="tasks" class="section active">
+
+<div class="card">
+
+<div class="cardTitle">
+<h2>إضافة مهمة</h2>
+</div>
+
+<input
+id="taskInput"
+class="input"
+placeholder="مثلاً: مراجعة المبيعات اليوم">
+
+<button class="addBtn" onclick="addTask()">
+＋ إضافة المهمة
+</button>
+
+</div>
+
+<div class="card">
+
+<div class="cardTitle">
+
+<h2>مهام اليوم</h2>
+
+<span class="badge" id="progressText">0%</span>
+
+</div>
+
+<div id="taskList"></div>
+
+</div>
+
+</section>
+
+
+<!-- الفواتير -->
+
+<section id="invoice" class="section">
+
+<div class="card">
+
+<div class="cardTitle">
+<h2>إنشاء فاتورة</h2>
+</div>
+
+<div class="invoiceHeader">
+
+<input
+id="customer"
+class="input"
+placeholder="اسم العميل">
+
+<input
+id="invoiceNo"
+class="input"
+placeholder="رقم الفاتورة">
+
+</div>
+
+<input
+id="invoiceDate"
+class="input"
+type="date">
+
+
+<div class="cardTitle">
+
+<h2>المنتجات</h2>
+
+<button class="addBtn" onclick="addItem()">
+＋ إضافة منتج
+</button>
+
+</div>
+
+<div id="items" class="items"></div>
+
+
+<!-- الخصم -->
+
+<div>
+
+<label class="fieldLabel">الخصم</label>
+
+<input
+id="discount"
+class="input"
+type="number"
+min="0"
+value="0"
+placeholder="أدخل قيمة الخصم"
+oninput="calculate()">
+
+</div>
+
+
+<!-- الإجماليات -->
+
+<div class="totals">
+
+<div class="totalLine">
+
+<span>المجموع</span>
+
+<b id="subtotal">0.00</b>
+
+</div>
+
+<div class="totalLine">
+
+<span>الخصم</span>
+
+<b id="discountValue">0.00</b>
+
+</div>
+
+<div class="totalLine final">
+
+<span>الإجمالي النهائي</span>
+
+<b id="grandTotal">0.00</b>
+
+</div>
+
+</div>
+
+
+<button
+class="saveInvoice"
+onclick="saveInvoice()">
+
+💾 حفظ وطباعة الفاتورة
+
+</button>
+
+</div>
+
+
+<div class="card">
+
+<div class="cardTitle">
+<h2>الفواتير المحفوظة</h2>
+</div>
+
+<div id="invoiceHistory"></div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<div class="bottom">
+<div class="bottomInner">
+DevForge Manager • يعمل بدون إنترنت
+</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+let tasks =
+JSON.parse(localStorage.getItem("df_tasks") || "[]");
+
+let invoices =
+JSON.parse(localStorage.getItem("df_invoices") || "[]");
+
+let items=[];
+
+
+document.getElementById("today").textContent =
+new Date().toLocaleDateString("ar-YE",{
+weekday:"long",
+year:"numeric",
+month:"long",
+day:"numeric"
+});
+
+
+document.getElementById("invoiceDate").value =
+new Date().toISOString().slice(0,10);
+
+
+document.getElementById("invoiceNo").value =
+"INV-"+Date.now().toString().slice(-6);
+
+
+function showTab(id,btn){
+
+document.querySelectorAll(".section")
+.forEach(x=>x.classList.remove("active"));
+
+document.querySelectorAll(".tab")
+.forEach(x=>x.classList.remove("active"));
+
+document.getElementById(id).classList.add("active");
+
+btn.classList.add("active");
+
+}
+
+
+function toast(msg){
+
+const t=document.getElementById("toast");
+
+t.textContent=msg;
+
+t.classList.add("show");
+
+setTimeout(()=>{
+t.classList.remove("show");
+},1800);
+
+}
+
+
+/* المهام */
+
+function addTask(){
+
+const input=document.getElementById("taskInput");
+
+const text=input.value.trim();
+
+if(!text){
+
+toast("اكتب اسم المهمة أولاً");
+
+return;
+}
+
+tasks.push({
+id:Date.now(),
+text:text,
+done:false
+});
+
+saveTasks();
+
+input.value="";
+
+renderTasks();
+
+toast("تمت إضافة المهمة");
+
+}
+
+
+function toggleTask(id){
+
+const task=tasks.find(t=>t.id===id);
+
+if(task){
+
+task.done=!task.done;
+
+saveTasks();
+
+renderTasks();
+
+}
+
+}
+
+
+function deleteTask(id){
+
+tasks=tasks.filter(t=>t.id!==id);
+
+saveTasks();
+
+renderTasks();
+
+toast("تم حذف المهمة");
+
+}
+
+
+function editTask(id){
+
+const task=tasks.find(t=>t.id===id);
+
+if(!task)return;
+
+const newText=prompt(
+"تعديل المهمة:",
+task.text
+);
+
+if(newText && newText.trim()){
+
+task.text=newText.trim();
+
+saveTasks();
+
+renderTasks();
+
+}
+
+}
+
+
+function saveTasks(){
+
+localStorage.setItem(
+"df_tasks",
+JSON.stringify(tasks)
+);
+
+}
+
+
+function renderTasks(){
+
+const list=document.getElementById("taskList");
+
+if(!tasks.length){
+
+list.innerHTML=`
+<div class="empty">
+📝<br>
+لا توجد مهام حالياً
+<br>
+<small>أضف مهمتك الأولى</small>
+</div>
+`;
+
+}else{
+
+list.innerHTML=tasks.map(t=>`
+
+<div class="task ${t.done?'done':''}">
+
+<button
+class="check"
+onclick="toggleTask(${t.id})">
+
+${t.done?'✓':''}
+
+</button>
+
+<div class="taskText">
+${escapeHTML(t.text)}
+</div>
+
+<div class="taskActions">
+
+<button
+class="iconBtn"
+onclick="editTask(${t.id})">
+✏️
+</button>
+
+<button
+class="iconBtn delete"
+onclick="deleteTask(${t.id})">
+🗑️
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+const total=tasks.length;
+
+const done=tasks.filter(t=>t.done).length;
+
+document.getElementById("taskCount").textContent=total;
+
+document.getElementById("doneCount").textContent=done;
+
+const progress=total?
+Math.round(done/total*100):0;
+
+document.getElementById("progressText").textContent=
+progress+"%";
+
+}
+
+
+/* المنتجات */
+
+function addItem(){
+
+items.push({
+id:Date.now(),
+name:"",
+qty:1,
+price:0
+});
+
+renderItems();
+
+}
+
+
+function removeItem(id){
+
+items=items.filter(i=>i.id!==id);
+
+renderItems();
+
+calculate();
+
+}
+
+
+function updateItem(id,key,value){
+
+const item=items.find(i=>i.id===id);
+
+if(!item)return;
+
+if(key==="qty" || key==="price"){
+value=parseFloat(value)||0;
+}
+
+item[key]=value;
+
+calculate();
+
+}
+
+
+function renderItems(){
+
+const box=document.getElementById("items");
+
+if(!items.length){
+
+box.innerHTML=`
+<div class="empty">
+🛒<br>
+لم تتم إضافة منتجات
+<br>
+<small>اضغط "إضافة منتج"</small>
+</div>
+`;
+
+calculate();
+
+return;
+}
+
+
+box.innerHTML=items.map((item,index)=>`
+
+<div class="item">
+
+<div class="itemTop">
+
+<span class="itemTitle">
+📦 المنتج ${index+1}
+</span>
+
+<button
+class="remove"
+onclick="removeItem(${item.id})">
+✕
+</button>
+
+</div>
+
+
+<div class="productGrid">
+
+
+<!-- اسم المنتج -->
+
+<div class="full">
+
+<label class="fieldLabel">
+اسم المنتج
+</label>
+
+<input
+class="input"
+placeholder="مثلاً: ماء، خبز، عصير..."
+value="${escapeAttr(item.name)}"
+oninput="updateItem(
+${item.id},
+'name',
+this.value
+)">
+
+</div>
+
+
+<!-- الكمية -->
+
+<div>
+
+<label class="fieldLabel">
+الكمية
+</label>
+
+<input
+class="input"
+type="number"
+min="1"
+value="${item.qty}"
+oninput="updateItem(
+${item.id},
+'qty',
+this.value
+)">
+
+</div>
+
+
+<!-- سعر الوحدة -->
+
+<div>
+
+<label class="fieldLabel">
+سعر الوحدة
+</label>
+
+<input
+class="input"
+type="number"
+min="0"
+placeholder="0.00"
+value="${item.price}"
+oninput="updateItem(
+${item.id},
+'price',
+this.value
+)">
+
+</div>
+
+</div>
+
+
+<!-- إجمالي المنتج -->
+
+<div class="productTotal">
+
+<span>
+إجمالي المنتج
+</span>
+
+<strong>
+${(
+(Number(item.qty)||0) *
+(Number(item.price)||0)
+).toFixed(2)}
+</strong>
+
+</div>
+
+</div>
+
+`).join("");
+
+calculate();
+
+}
+
+
+/* الحساب */
+
+function calculate(){
+
+let subtotal=0;
+
+items.forEach(item=>{
+
+subtotal +=
+(Number(item.qty)||0) *
+(Number(item.price)||0);
+
+});
+
+
+const discount=
+parseFloat(
+document.getElementById("discount").value
+)||0;
+
+
+const total=
+Math.max(0,subtotal-discount);
+
+
+document.getElementById("subtotal").textContent=
+subtotal.toFixed(2);
+
+document.getElementById("discountValue").textContent=
+discount.toFixed(2);
+
+document.getElementById("grandTotal").textContent=
+total.toFixed(2);
+
+}
+
+
+/* حفظ الفاتورة */
+
+function saveInvoice(){
+
+if(!items.length){
+
+toast("أضف منتجاً واحداً على الأقل");
+
+return;
+}
+
+
+const customer=
+document.getElementById("customer")
+.value.trim() || "عميل نقدي";
+
+
+const invoiceNo=
+document.getElementById("invoiceNo")
+.value || "INV-"+Date.now();
+
+
+const date=
+document.getElementById("invoiceDate").value;
+
+
+const subtotal=
+parseFloat(
+document.getElementById("subtotal").textContent
+)||0;
+
+
+const discount=
+parseFloat(
+document.getElementById("discountValue").textContent
+)||0;
+
+
+const total=
+parseFloat(
+document.getElementById("grandTotal").textContent
+)||0;
+
+
+const invoice={
+
+id:Date.now(),
+
+number:invoiceNo,
+
+customer:customer,
+
+date:date,
+
+items:JSON.parse(JSON.stringify(items)),
+
+subtotal:subtotal,
+
+discount:discount,
+
+total:total
+
+};
+
+
+invoices.unshift(invoice);
+
+
+localStorage.setItem(
+"df_invoices",
+JSON.stringify(invoices)
+);
+
+
+renderInvoices();
+
+printInvoice(invoice);
+
+toast("تم حفظ الفاتورة");
+
+}
+
+
+/* الفواتير المحفوظة */
+
+function renderInvoices(){
+
+const box=
+document.getElementById("invoiceHistory");
+
+document.getElementById("invoiceCount")
+.textContent=invoices.length;
+
+
+if(!invoices.length){
+
+box.innerHTML=`
+<div class="empty">
+🧾<br>
+لا توجد فواتير محفوظة
+</div>
+`;
+
+return;
+}
+
+
+box.innerHTML=invoices.map(inv=>`
+
+<div class="historyItem">
+
+<div>
+
+<b>
+${escapeHTML(inv.number)}
+</b>
+
+<br>
+
+<small>
+${escapeHTML(inv.customer)}
+•
+${inv.date}
+</small>
+
+</div>
+
+<div style="text-align:left">
+
+<b>
+${inv.total.toFixed(2)}
+</b>
+
+<br>
+
+<button
+class="iconBtn"
+onclick="printInvoiceById(${inv.id})">
+🖨️
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+function printInvoiceById(id){
+
+const invoice=
+invoices.find(x=>x.id===id);
+
+if(invoice){
+printInvoice(invoice);
+}
+
+}
+
+
+/* الطباعة */
+
+function printInvoice(inv){
+
+const rows=inv.items.map(item=>`
+
+<tr>
+
+<td>
+${escapeHTML(item.name || "منتج")}
+</td>
+
+<td>
+${item.qty}
+</td>
+
+<td>
+${Number(item.price).toFixed(2)}
+</td>
+
+<td>
+${(
+item.qty*item.price
+).toFixed(2)}
+</td>
+
+</tr>
+
+`).join("");
+
+
+const win=window.open("","_blank");
+
+
+if(!win){
+
+toast("اسمح بالنوافذ المنبثقة للطباعة");
+
+return;
+}
+
+
+win.document.write(`
+
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+${escapeHTML(inv.number)}
+</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+color:#111
+}
+
+.invoice{
+max-width:700px;
+margin:auto
+}
+
+h1{
+text-align:center
+}
+
+.info{
+display:flex;
+justify-content:space-between;
+margin:20px 0
+}
+
+table{
+width:100%;
+border-collapse:collapse
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+text-align:center
+}
+
+.total{
+margin-top:20px;
+text-align:left;
+font-size:20px;
+font-weight:bold;
+line-height:1.8
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="invoice">
+
+<h1>فاتورة مبيعات</h1>
+
+<div class="info">
+
+<div>
+<b>رقم الفاتورة:</b>
+${escapeHTML(inv.number)}
+</div>
+
+<div>
+<b>التاريخ:</b>
+${inv.date}
+</div>
+
+</div>
+
+<p>
+<b>العميل:</b>
+${escapeHTML(inv.customer)}
+</p>
+
+<table>
+
+<thead>
+
+<tr>
+<th>اسم المنتج</th>
+<th>الكمية</th>
+<th>سعر الوحدة</th>
+<th>الإجمالي</th>
+</tr>
+
+</thead>
+
+<tbody>
+${rows}
+</tbody>
+
+</table>
+
+<div class="total">
+
+المجموع:
+${inv.subtotal.toFixed(2)}
+
+<br>
+
+الخصم:
+${inv.discount.toFixed(2)}
+
+<br>
+
+الإجمالي النهائي:
+${inv.total.toFixed(2)}
+
+</div>
+
+<p style="text-align:center;margin-top:40px">
+شكراً لتعاملكم معنا ❤️
+</p>
+
+</div>
+
+<script>
+
+window.onload=function(){
+window.print();
+}
+
+<\/script>
+
+</body>
+
+</html>
+
+`);
+
+win.document.close();
+
+}
+
+
+/* الوضع الداكن */
+
+function toggleTheme(){
+
+document.body.classList.toggle("dark");
+
+localStorage.setItem(
+"df_dark",
+document.body.classList.contains("dark")
+);
+
+}
+
+
+if(localStorage.getItem("df_dark")==="true"){
+document.body.classList.add("dark");
+}
+
+
+/* حماية النص */
+
+function escapeHTML(str){
+
+return String(str)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+function escapeAttr(str){
+return escapeHTML(str);
+}
+
+
+renderTasks();
+renderItems();
+renderInvoices();
+
+</script>
+
+</body>
+</html>
